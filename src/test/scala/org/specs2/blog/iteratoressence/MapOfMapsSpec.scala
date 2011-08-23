@@ -10,6 +10,8 @@ import Applicative._
 
 /**
  * code to test the answer to https://gist.github.com/1046228
+ * 
+ * and also to: http://stackoverflow.com/questions/7142514/in-scala-how-can-i-do-the-equivalent-of-an-sql-sum-and-group-by
  */
 class MapOfMapsSpec extends mutable.Specification {
 
@@ -21,6 +23,13 @@ class MapOfMapsSpec extends mutable.Specification {
     mapMonoid.append(map1, map2) must_== Map(1 -> List(1, 2, 3), 2 -> List(4))
   }
 
+  "I can build a map String->Int" >> {
+    val map1 = List("a" -> 1, "a" -> 2, "b" -> 3, "c" -> 4, "b" -> 5)
+    implicit val mapMonoid = MapMonoid[String, Int]
+
+    map1.reduceMonoid(Map(_)) must_== Map("a" -> 3, "b" -> 8, "c" -> 4)
+  }
+  
   "I sort events per day, place and sum the goods and bads" >> {
     events.reduceMonoid(e => Map(e.day -> Map(e.placeId -> DaySummary.fromBool(e.good)))) must_==
       Map(1 -> Map(100 -> DaySummary(2, 1),

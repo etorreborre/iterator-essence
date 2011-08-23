@@ -90,8 +90,8 @@ class BinaryTreeTraversal extends org.specs2.mutable.Specification {
         for (u <- shape) {
           if (!elements.isEmpty) {
             list match {
-              case None    => list = Some(List(elements.first))
-              case Some(l) => list = Some(l :+ elements.first)
+              case None    => list = Some(List(elements.head))
+              case Some(l) => list = Some(l :+ elements.head)
             }
             elements = elements.drop(1)
           } else {
